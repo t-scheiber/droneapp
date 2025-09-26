@@ -43,9 +43,6 @@ next-env.d.ts
 # Ignore  files in documents folder
 public/documents/
 
-# Ignore build scripts but keep source scripts
-scripts/build-*
-
 # Generated documents list (will be regenerated on build)
 app/documents.json
 
