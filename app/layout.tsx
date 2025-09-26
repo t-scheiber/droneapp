@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "🚁 Drone Document Wallet - Police Ready",
-  description: "Instant access to drone insurance, registration, and aviation documents for police verification",
+  title: "Drone Documents",
+  description: "Authority-ready access to your drone documentation",
 };
 
 export default function RootLayout({
