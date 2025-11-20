@@ -1,0 +1,32 @@
+{
+  "name": "drone",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "bun scripts/sync-documents.js && bun scripts/generate-file-list.js && next dev --turbopack",
+    "build": "bun scripts/sync-documents.js && bun scripts/generate-file-list.js && next build",
+    "start": "next start",
+    "lint": "eslint",
+    "generate-files": "bun scripts/generate-file-list.js",
+    "sync-documents": "bun scripts/sync-documents.js"
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.14",
+    "next": "^16.0.3",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "@types/node": "^20.19.25",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
+    "@tailwindcss/postcss": "^4.1.17",
+    "tailwindcss": "^4.1.17",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react": "^7.37.5",
+    "@typescript-eslint/eslint-plugin": "^8.47.0",
+    "@typescript-eslint/parser": "^8.47.0",
+    "globals": "^15.15.0"
+  }
+}
