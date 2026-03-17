@@ -46,3 +46,8 @@ public/documents/
 # Generated documents list (will be regenerated on build)
 app/documents.json
 
+.claude/
+.vscode/
+.cursor/
+.chatgpt/
+.gemini/
