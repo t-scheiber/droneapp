@@ -23,7 +23,7 @@
     "@types/react-dom": "^19.2.3",
     "@tailwindcss/postcss": "^4.2.2",
     "tailwindcss": "^4.2.2",
-    "eslint": "^10.0.3",
+    "eslint": "^10.1.0",
     "eslint-plugin-react": "^7.37.5",
     "@typescript-eslint/eslint-plugin": "^8.58.0",
     "@typescript-eslint/parser": "^8.58.0",
