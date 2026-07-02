@@ -11,7 +11,7 @@
     "sync-documents": "bun scripts/sync-documents.js"
   },
   "dependencies": {
-    "adm-zip": "^0.5.17",
+    "adm-zip": "^0.5.18",
     "next": "^16.2.9",
     "react": "^19.2.6",
     "react-dom": "^19.2.6"
