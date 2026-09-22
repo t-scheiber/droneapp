@@ -39,6 +39,8 @@ jobs:
       CI: 'true'
       AI_PROVIDER: openrouter
       AI_MODEL: z-ai/glm-5.3-flash
+      APP_URL: http://localhost:3000
+      NEXT_PUBLIC_APP_URL: http://localhost:3000
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/ci
       BETTER_AUTH_SECRET: ci-only-placeholder-not-used-outside-disposable-validation
     services:
@@ -97,6 +99,9 @@ jobs:
           node "$RUNNER_TEMP/renovate-helpers/scripts/ai-renovate-fix.mjs" --conflicts --attempts 3
           git commit -m 'fix(deps): resolve dependency update conflicts'
 
+      - name: Record the merged validation baseline
+        run: echo "VALIDATION_BASELINE_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+
       - name: Detect validation for all project directories
         id: detect
         env:
@@ -106,7 +111,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v7
         with:
-          node-version: '24'
+          node-version: '24.20.0'
 
       - name: Set up Bun
         if: steps.detect.outputs.needs_bun == 'true'
@@ -131,7 +136,7 @@ jobs:
         if: steps.detect.outputs.needs_python == 'true'
         uses: actions/setup-python@v6
         with:
-          python-version: '3.13'
+          python-version: '3.14.7'
 
       - name: Install Rust desktop build dependencies
         if: steps.detect.outputs.needs_rust == 'true'
@@ -201,7 +206,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-      statuses: read
+      statuses: write
       checks: read
       actions: read
     steps:
