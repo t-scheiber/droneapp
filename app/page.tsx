@@ -5,13 +5,17 @@ import { Login } from './login';
 import { PDFViewer } from './pdf-viewer';
 
 function AppContent() {
-  const { isAuthenticated } = useAuth();
+  const { status } = useAuth();
 
-  if (!isAuthenticated) {
+  if (status === 'loading') {
+    return <div className="min-h-screen bg-gray-50" aria-busy="true" />;
+  }
+
+  if (status === 'signed-out') {
     return <Login />;
   }
 
-  return <PDFViewer />;
+  return <PDFViewer role={status} />;
 }
 
 export default function Home() {

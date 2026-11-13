@@ -1,22 +1,37 @@
 'use client';
 
-import { useState } from 'react';
-import { useAuth } from './auth-context';
-import documentsDataRaw from './documents.json';
+import { useEffect, useState } from 'react';
+import { useAuth, type Role } from './auth-context';
 
 export type PDFDocument = {
   id: string;
   name: string;
   description: string;
   file: string;
-  thumbnail?: string;
 };
 
-const documentsData = documentsDataRaw as PDFDocument[];
-
-export function PDFViewer() {
+export function PDFViewer({ role }: { role: Role }) {
   const [selectedPDF, setSelectedPDF] = useState<PDFDocument | null>(null);
+  const [documentsData, setDocumentsData] = useState<PDFDocument[] | null>(null);
+  const [loadError, setLoadError] = useState(false);
   const { logout } = useAuth();
+  const isDemo = role === 'demo';
+
+  useEffect(() => {
+    fetch('/api/documents', { cache: 'no-store' })
+      .then((response) => {
+        if (response.status === 401) {
+          void logout();
+          return null;
+        }
+        if (!response.ok) throw new Error(`Status ${response.status}`);
+        return response.json();
+      })
+      .then((data: { documents: PDFDocument[] } | null) => {
+        if (data) setDocumentsData(data.documents);
+      })
+      .catch(() => setLoadError(true));
+  }, [logout]);
 
   const handleViewPDF = (pdf: PDFDocument) => {
     setSelectedPDF(pdf);
@@ -35,14 +50,29 @@ export function PDFViewer() {
     setSelectedPDF(null);
   };
 
-  // Show message if no documents are found
-  if (!documentsData || documentsData.length === 0) {
+  if (loadError) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Could not load documents</h2>
+          <button onClick={() => void logout()} className="text-indigo-600 underline">Back to login</button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!documentsData) {
+    return <div className="min-h-screen bg-gray-50" aria-busy="true" />;
+  }
+
+  if (documentsData.length === 0) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">No Documents Found</h2>
-          <p className="text-gray-600">No PDF documents were found in the documents folder.</p>
-          <p className="text-gray-600 mt-2">Please add PDF files to the public/documents/ directory and rebuild the application.</p>
+          <p className="text-gray-600">No PDF documents were found in the private documents folder.</p>
+          <p className="text-gray-600 mt-2">Add PDF files to private-documents/ (or the folder in DOCS_DIR) and reload.</p>
+          <button onClick={() => void logout()} className="mt-4 text-indigo-600 underline">Logout</button>
         </div>
       </div>
     );
@@ -56,7 +86,7 @@ export function PDFViewer() {
           <div className="flex justify-between items-center py-3 sm:py-4">
             <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 truncate">🚁 Drone Documents</h1>
             <button
-              onClick={logout}
+              onClick={() => void logout()}
               className="inline-flex items-center px-3 sm:px-4 py-2 sm:py-2.5 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors touch-manipulation min-h-[44px]"
             >
               <svg className="h-4 w-4 mr-1 sm:mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -68,6 +98,14 @@ export function PDFViewer() {
           </div>
         </div>
       </header>
+
+      {isDemo && (
+        <div className="bg-amber-100 border-b border-amber-200 text-amber-900 text-sm">
+          <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 xl:px-8 py-2.5">
+            Demo mode. These are fictional sample documents for Max Mustermann. The real documents need the owner passphrase.
+          </div>
+        </div>
+      )}
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto py-4 sm:py-6 lg:py-8 px-3 sm:px-4 lg:px-6 xl:px-8">

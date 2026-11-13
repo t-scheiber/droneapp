@@ -6,7 +6,10 @@ const https = require('https');
 const { URL } = require('url');
 const AdmZip = require('adm-zip');
 
-const documentsDir = path.join(__dirname, '..', 'public', 'documents');
+// Must match REAL_DOCUMENTS_DIR in lib/documents.ts. Never point this into public/.
+const documentsDir = process.env.DOCS_DIR
+  ? path.resolve(process.env.DOCS_DIR)
+  : path.join(__dirname, '..', 'private-documents');
 const sourceDir = process.env.DOCS_SOURCE_DIR;
 const archiveUrl = process.env.DOCS_ARCHIVE_URL;
 

@@ -1,0 +1,87 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R /F2 5 0 R >> >> /Contents 6 0 R >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>
+endobj
+6 0 obj
+<< /Length 1585 >>
+stream
+0.88 g
+BT /F2 110 Tf 0.7071 0.7071 -0.7071 0.7071 170 230 Tm (SAMPLE) Tj ET
+0.75 0.1 0.1 rg
+0 792 m 612 792 l 612 750 l 0 750 l f
+1 g
+BT /F2 13 Tf 40 766 Td (SAMPLE / DEMO DOCUMENT - FICTIONAL DATA - NOT VALID) Tj ET
+0 g
+BT /F2 20 Tf 40 700 Td (SAMPLE - Drone operator registration) Tj ET
+0.3 g
+BT /F1 12 Tf 40 678 Td (UAS operator registration confirmation \(fictional\)) Tj ET
+0.6 G 1 w 40 662 m 572 662 l S
+0.35 g
+BT /F1 11 Tf 40 630 Td (Issued by) Tj ET
+0 g
+BT /F2 11 Tf 190 630 Td (Example Aviation Authority \(does not exist\)) Tj ET
+0.35 g
+BT /F1 11 Tf 40 606 Td (Operator number) Tj ET
+0 g
+BT /F2 11 Tf 190 606 Td (AUT-DEMO-0000000) Tj ET
+0.35 g
+BT /F1 11 Tf 40 582 Td (Name) Tj ET
+0 g
+BT /F2 11 Tf 190 582 Td (Max Mustermann \(fictional person\)) Tj ET
+0.35 g
+BT /F1 11 Tf 40 558 Td (Address) Tj ET
+0 g
+BT /F2 11 Tf 190 558 Td (Musterstrasse 1, 1010 Wien, Austria) Tj ET
+0.35 g
+BT /F1 11 Tf 40 534 Td (Date of birth) Tj ET
+0 g
+BT /F2 11 Tf 190 534 Td (01.01.1990) Tj ET
+0.35 g
+BT /F1 11 Tf 40 510 Td (Category) Tj ET
+0 g
+BT /F2 11 Tf 190 510 Td (Open category) Tj ET
+0.35 g
+BT /F1 11 Tf 40 486 Td (Registered on) Tj ET
+0 g
+BT /F2 11 Tf 190 486 Td (15.02.2026) Tj ET
+0.35 g
+BT /F1 11 Tf 40 462 Td (Valid until) Tj ET
+0 g
+BT /F2 11 Tf 190 462 Td (14.02.2031) Tj ET
+0.6 G 40 120 m 572 120 l S
+0.3 g
+BT /F1 9 Tf 40 100 Td (This is a sample for the public demo of the drone document viewer.) Tj ET
+BT /F1 9 Tf 40 86 Td (Max Mustermann is a placeholder name. No real person, policy or registration is shown.) Tj ET
+BT /F1 9 Tf 40 72 Td (Source: github.com/t-scheiber/droneapp) Tj ET
+endstream
+endobj
+7 0 obj
+<< /Title (SAMPLE - Drone operator registration) /Author (droneapp demo) /Subject (Fictional sample document) /Producer (scripts/generate-demo-pdfs.js) >>
+endobj
+xref
+0 8
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000251 00000 n 
+0000000348 00000 n 
+0000000450 00000 n 
+0000002087 00000 n 
+trailer
+<< /Size 8 /Root 1 0 R /Info 7 0 R >>
+startxref
+2257
+%%EOF

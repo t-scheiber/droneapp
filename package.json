@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "bun scripts/sync-documents.js && bun scripts/generate-file-list.js && next dev --turbopack",
-    "build": "bun scripts/sync-documents.js && bun scripts/generate-file-list.js && next build",
+    "dev": "bun scripts/sync-documents.js && next dev --turbopack",
+    "build": "bun scripts/sync-documents.js && next build",
     "start": "next start",
     "lint": "eslint",
-    "generate-files": "bun scripts/generate-file-list.js",
+    "generate-demo-pdfs": "bun scripts/generate-demo-pdfs.js",
     "sync-documents": "bun scripts/sync-documents.js"
   },
   "dependencies": {

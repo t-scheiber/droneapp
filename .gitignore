@@ -32,6 +32,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env.local
+.env
 
 # vercel
 .vercel
@@ -40,10 +41,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Ignore  files in documents folder
+# Real documents. They stay out of git and out of public/.
+private-documents/
 public/documents/
-
-# Generated documents list (will be regenerated on build)
 app/documents.json
 
 .claude/

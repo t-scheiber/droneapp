@@ -1,54 +1,55 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useState, ReactNode } from 'react';
+
+export type Role = 'demo' | 'owner';
+type Status = 'loading' | 'signed-out' | Role;
 
 interface AuthContextType {
-  isAuthenticated: boolean;
-  login: (passphrase: string) => boolean;
-  logout: () => void;
+  status: Status;
+  login: (passphrase: string) => Promise<boolean>;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// The passphrase is checked by /api/session on the server. The browser only
+// learns the resulting role; the session itself is an httpOnly cookie.
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [status, setStatus] = useState<Status>('loading');
 
   useEffect(() => {
-    // Check if user is already authenticated on mount
-    const authStatus = localStorage.getItem('pdf-viewer-auth');
-    if (authStatus === 'true') {
-      setIsAuthenticated(true);
+    // Left over from the old client-side login.
+    localStorage.removeItem('pdf-viewer-auth');
+
+    fetch('/api/session', { cache: 'no-store' })
+      .then((response) => response.json())
+      .then((data: { role: Role | null }) => setStatus(data.role ?? 'signed-out'))
+      .catch(() => setStatus('signed-out'));
+  }, []);
+
+  const login = useCallback(async (passphrase: string): Promise<boolean> => {
+    try {
+      const response = await fetch('/api/session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ passphrase }),
+      });
+      if (!response.ok) return false;
+      const data: { role: Role } = await response.json();
+      setStatus(data.role);
+      return true;
+    } catch {
+      return false;
     }
   }, []);
 
-  const login = (passphrase: string): boolean => {
-    // Get passphrase from environment variable (embedded at build time for static export)
-    const correctPassphrase = process.env.NEXT_PUBLIC_DRONE_PASSPHRASE;
+  const logout = useCallback(async () => {
+    await fetch('/api/session', { method: 'DELETE' }).catch(() => undefined);
+    setStatus('signed-out');
+  }, []);
 
-    if (!correctPassphrase) {
-      console.error('NEXT_PUBLIC_DRONE_PASSPHRASE environment variable is not set');
-      return false;
-    }
-
-    // Case-insensitive comparison
-    if (passphrase.toLowerCase().trim() === correctPassphrase.toLowerCase().trim()) {
-      setIsAuthenticated(true);
-      localStorage.setItem('pdf-viewer-auth', 'true');
-      return true;
-    }
-    return false;
-  };
-
-  const logout = () => {
-    setIsAuthenticated(false);
-    localStorage.removeItem('pdf-viewer-auth');
-  };
-
-  return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={{ status, login, logout }}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
