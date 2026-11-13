@@ -36,6 +36,16 @@ Sample PDFs are committed in `public/demo-documents/` and served as static files
 
 Real PDFs are never committed and never placed in `public/`. They go into `private-documents/` (gitignored), or into the folder named by `DOCS_DIR`. The list is read from that folder on each request, so the file names do not ship in the JavaScript bundle.
 
+An optional `documents.json` in the same folder sets the order, titles and descriptions:
+
+```json
+[
+  { "file": "registration.pdf", "title": "Operator registration", "description": "Austro Control, valid until 11.01.2027" }
+]
+```
+
+PDFs listed there come first, in that order. PDFs not listed follow with a name made from the file name. The manifest itself is never served.
+
 `scripts/sync-documents.js` runs before `dev` and `build` and fills the real folder. It does nothing unless one of these is set:
 
 - `DOCS_SOURCE_DIR`: a local folder, copied recursively.
