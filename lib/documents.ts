@@ -51,16 +51,43 @@ async function realPdfFileNames(): Promise<string[]> {
   }
 }
 
+type ManifestEntry = { file: string; title?: string; description?: string };
+
+// Optional documents.json next to the PDFs: [{ "file", "title", "description" }].
+// Listed files come first, in manifest order, with the given title and
+// description. PDFs missing from the manifest follow with generated names.
+async function readManifest(): Promise<ManifestEntry[]> {
+  try {
+    const raw = await fs.readFile(path.join(REAL_DOCUMENTS_DIR, 'documents.json'), 'utf8');
+    const parsed: unknown = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter(
+      (entry): entry is ManifestEntry =>
+        typeof entry === 'object' && entry !== null && typeof (entry as ManifestEntry).file === 'string',
+    );
+  } catch {
+    return [];
+  }
+}
+
 export async function listDocuments(role: Role): Promise<DocumentEntry[]> {
   if (role === 'demo') return DEMO_DOCUMENTS;
 
   const names = await realPdfFileNames();
-  return names.map((fileName) => {
+  const manifest = await readManifest();
+  const byFile = new Map(manifest.map((entry) => [entry.file, entry]));
+  const ordered = [
+    ...manifest.map((entry) => entry.file).filter((file) => names.includes(file)),
+    ...names.filter((file) => !byFile.has(file)),
+  ];
+
+  return ordered.map((fileName) => {
     const baseName = fileName.replace(/\.pdf$/i, '');
+    const entry = byFile.get(fileName);
     return {
       id: baseName.toLowerCase().replace(/[^a-z0-9]/g, '-'),
-      name: formatFileName(baseName),
-      description: describe(baseName),
+      name: entry?.title ?? formatFileName(baseName),
+      description: entry?.description ?? describe(baseName),
       file: `/api/documents/${encodeURIComponent(fileName)}`,
     };
   });
